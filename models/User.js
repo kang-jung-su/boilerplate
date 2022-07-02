@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-//10자리 salt를 만들어서 암호화한다.
-const saltRounds = 10;
+const saltRounds = 10; //10자리 salt를 만들어서 암호화한다.
+const jwt = require("jsonwebtoken");
 
 const userSchema = mongoose.Schema({
   name: {
@@ -48,8 +48,32 @@ userSchema.pre("save", function (next) {
         next();
       });
     });
+  } else {
+    next();
   }
 });
+
+userSchema.methods.comparePassword = function (plainPassword, cb) {
+  //입력된 비밀번호(111123)를 암호화한 후 암호화 된 상태로 디비에 저장된 값이 같은지 확인.
+  bcrypt.compare(plainPassword, this.password, function (err, isMatch) {
+    if (err) return cb(err);
+    cb(null, isMatch);
+  });
+};
+
+userSchema.methods.generateToken = function (cb) {
+  var user = this;
+
+  //jsonwebtoken을 이용해서 생성하기
+  var token = jwt.sign(user._id.toHexString(), "secretToken");
+  //user._id + 'secretToken' = token -> 'secretToken' -> user._id //합쳐서 토큰을 만든다. 만든 토큰으로 누구인지 확인
+
+  user.token = token;
+  user.save(function (err, user) {
+    if (err) return cb(err);
+    cb(null, user);
+  });
+};
 
 const User = mongoose.model("User", userSchema);
 
