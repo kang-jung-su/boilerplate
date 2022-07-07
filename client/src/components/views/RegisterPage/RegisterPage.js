@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { registerUser } from "../../../_actions/user_action";
+import { useNavigate } from "react-router-dom";
 
 function RegisterPage(props) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
 
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
@@ -32,15 +35,16 @@ function RegisterPage(props) {
 
     let body = {
       email: Email,
-      Password: Password,
+      password: Password,
       name: Name,
     };
 
     dispatch(registerUser(body)).then((response) => {
-      if (response.payload.loginSuccess) {
-        props.history.push("/");
+      if (response.payload.success) {
+        alert("회원가입이 완료되었습니다.");
+        navigate("/login");
       } else {
-        alert("Error");
+        alert("회원가입 중 오류가 발생했습니다.");
       }
     });
   };
@@ -61,10 +65,13 @@ function RegisterPage(props) {
       >
         <label>Email</label>
         <input type="email" value={Email} onChange={onEmailHandler} />
+
         <label>name</label>
         <input type="text" value={Name} onChange={onNameHandler} />
+
         <label>Password</label>
         <input type="Password" value={Password} onChange={onPasswordHandler} />
+
         <label>Confirm Password</label>
         <input
           type="Password"

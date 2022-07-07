@@ -7,7 +7,7 @@ export function loginUser(dataToSubmit) {
     .then((response) => response.data);
 
   return {
-    type: "LOGIN_USER",
+    type: LOGIN_USER,
     payload: request,
   };
 }
@@ -18,7 +18,7 @@ export function registerUser(dataToSubmit) {
     .then((response) => response.data);
 
   return {
-    type: "REGISTER_USER",
+    type: REGISTER_USER,
     payload: request,
   };
 }
