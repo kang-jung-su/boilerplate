@@ -21,6 +21,7 @@
     "mongoose": "^6.4.1"
   },
   "devDependencies": {
+    "@ant-design/icons": "^4.7.0",
     "nodemon": "^2.0.18"
   }
 }

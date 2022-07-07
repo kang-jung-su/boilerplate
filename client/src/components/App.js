@@ -1,10 +1,12 @@
 import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Auth from "../hoc/auth";
 
-import LandingPage from "./components/views/LandingPage/LandingPage";
-import LogingPage from "./components/views/LoginPage/LoginPage";
-import RegisterPage from "./components/views/RegisterPage/RegisterPage";
-import Auth from "./hoc/auth";
+
+import LandingPage from "./views/LandingPage/LandingPage";
+import LogingPage from "./views/LoginPage/LoginPage";
+import RegisterPage from "./views/RegisterPage/RegisterPage";
+import NavBar from "./views/NavBar/NavBar";
 
 function App() {
   const AuthLandinPage = Auth(LandingPage, null);
@@ -16,6 +18,7 @@ function App() {
 
   return (
     <Router>
+      <NavBar />
       <div>
         <Routes>
           <Route path="/" element={<AuthLandinPage />} />
